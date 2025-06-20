@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .converter {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="converter">
+        <h1>Currency Converter</h1>
+        
+        <div class="form-group">
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" placeholder="Enter amount" min="0" step="0.01">
+        </div>
+        
+        <div class="form-group">
+            <label for="from">From:</label>
+            <select id="from">
+                <option value="USD">US Dollar (USD)</option>
+                <option value="EUR">Euro (EUR)</option>
+                <option value="GBP">British Pound (GBP)</option>
+                <option value="JPY">Japanese Yen (JPY)</option>
+                <option value="CAD">Canadian Dollar (CAD)</option>
+                <option value="AUD">Australian Dollar (AUD)</option>
+                <option value="CNY">Chinese Yuan (CNY)</option>
+                <option value="INR">Indian Rupee (INR)</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="to">To:</label>
+            <select id="to">
+                <option value="EUR">Euro (EUR)</option>
+                <option value="USD">US Dollar (USD)</option>
+                <option value="GBP">British Pound (GBP)</option>
+                <option value="JPY">Japanese Yen (JPY)</option>
+                <option value="CAD">Canadian Dollar (CAD)</option>
+                <option value="AUD">Australian Dollar (AUD)</option>
+                <option value="CNY">Chinese Yuan (CNY)</option>
+                <option value="INR">Indian Rupee (INR)</option>
+            </select>
+        </div>
+        
+        <button onclick="convertCurrency()">Convert</button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Sample exchange rates (these would normally come from an API)
+        const exchangeRates = {
+            USD: { USD: 1, EUR: 0.93, GBP: 0.79, JPY: 157.89, CAD: 1.37, AUD: 1.51, CNY: 7.24, INR: 83.47 },
+            EUR: { USD: 1.08, EUR: 1, GBP: 0.85, JPY: 169.96, CAD: 1.47, AUD: 1.62, CNY: 7.78, INR: 89.72 },
+            GBP: { USD: 1.27, EUR: 1.18, GBP: 1, JPY: 200.34, CAD: 1.73, AUD: 1.91, CNY: 9.17, INR: 105.78 },
+            JPY: { USD: 0.0063, EUR: 0.0059, GBP: 0.0050, JPY: 1, CAD: 0.0087, AUD: 0.0096, CNY: 0.046, INR: 0.53 },
+            CAD: { USD: 0.73, EUR: 0.68, GBP: 0.58, JPY: 115.22, CAD: 1, AUD: 1.10, CNY: 5.28, INR: 60.92 },
+            AUD: { USD: 0.66, EUR: 0.62, GBP: 0.52, JPY: 104.74, CAD: 0.91, AUD: 1, CNY: 4.80, INR: 55.36 },
+            CNY: { USD: 0.14, EUR: 0.13, GBP: 0.11, JPY: 21.81, CAD: 0.19, AUD: 0.21, CNY: 1, INR: 11.53 },
+            INR: { USD: 0.012, EUR: 0.011, GBP: 0.0095, JPY: 1.89, CAD: 0.016, AUD: 0.018, CNY: 0.087, INR: 1 }
+        };
+
+        function convertCurrency() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            const fromCurrency = document.getElementById('from').value;
+            const toCurrency = document.getElementById('to').value;
+            
+            if (isNaN(amount)) {
+                document.getElementById('result').innerHTML = 'Please enter a valid amount';
+                return;
+            }
+            
+            if (fromCurrency === toCurrency) {
+                document.getElementById('result').innerHTML = `Converted Amount: ${amount.toFixed(2)} ${toCurrency}`;
+                return;
+            }
+            
+            const rate = exchangeRates[fromCurrency][toCurrency];
+            const convertedAmount = amount * rate;
+            
+            document.getElementById('result').innerHTML = 
+                `${amount.toFixed(2)} ${fromCurrency} = ${convertedAmount.toFixed(2)} ${toCurrency}`;
+        }
+    </script>
+</body>
+</html>
